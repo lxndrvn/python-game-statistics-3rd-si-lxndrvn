@@ -60,3 +60,45 @@ def get_line_number_by_title(file_name, title):
             return all_titles
         title_number = all_titles.index(title) + 1
         return title_number
+
+
+def sort_abc(file_name):
+    with open(file_name, "r") as input_file:
+        content = input_file.readlines()
+        all_titles = list()
+        for line in content:
+            words = line.split("\t")
+            all_titles.append(words[0])
+        lenght = len(all_titles)
+        for i in range(0, 23):
+            for j in range(i + 1, 24):
+                if all_titles[j] < all_titles[i]:
+                    abc_titles = all_titles[j]
+                    all_titles[j] = all_titles[i]
+                    all_titles[i] = abc_titles
+        return all_titles
+
+
+def get_genres(file_name):
+    with open(file_name, "r") as input_file:
+        content = input_file.readlines()
+        all_genres = list()
+        for line in content:
+            words = line.split("\t")
+            if words[3] not in all_genres:
+                all_genres.append(words[3])
+        return sorted(all_genres, key=str.lower)
+
+
+def when_was_top_sold_fps(file_name):
+    with open(file_name, "r") as input_file:
+        content = input_file.readlines()
+        game = {}
+        game_type = "First-person shooter"
+        for line in content:
+            words = line.split("\t")
+            if str(words[3]) == game_type:
+                words[1] = float(words[1])
+                game.update({words[2]: words[1]})
+        year_of_the_release = max(game, key=game.get)
+        return int(year_of_the_release)
